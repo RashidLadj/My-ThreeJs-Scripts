@@ -9,7 +9,7 @@ function init() {
 	
 	var box = getBox(1, 1, 1);
 	var plane = getPlane(20);
-	var pointLight = getPointLight(1,'#ffffff');
+	var pointLight = getPointLight(1, '#ffffff');
 	var sphere = getSphere(0.05);
 
 	plane.name = 'plane-1';
@@ -44,7 +44,10 @@ function init() {
 	var renderer = new THREE.WebGLRenderer();
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.setClearColor('rgb(120, 120, 120)');
-	update(renderer, scene, camera);
+
+	var controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+	update(renderer, scene, camera, controls);
 
 	document.getElementById('webgl').appendChild(renderer.domElement);
 }
@@ -94,14 +97,17 @@ function getPointLight(intensity, color) {
 	return light;
 }
 
-function update(renderer, scene, camera) {
+function update(renderer, scene, camera, controls) {
 	renderer.render(
 		scene,
 		camera
 	);
 
+	// required if controls.enableDamping or controls.autoRotate are set to true
+	//  controls.update();
+
 	requestAnimationFrame(function() {
-		update(renderer, scene, camera);
+		update(renderer, scene, camera, controls);
 	})
 }
 
